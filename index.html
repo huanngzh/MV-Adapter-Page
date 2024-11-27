@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="description"
+      content="MV-Adapter is a versatile plug-and-play adapter that turns existing pre-trained text-to-image (T2I) diffusion models to multi-view generators." />
+    <meta
+      name="keywords"
+      content="MV-Adapter, Multi-view Image Generation, Diffusion Models" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MV-Adapter: Multi-view Consistent Image Generation Made Easy</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+      rel="stylesheet" />
+
+    <link rel="stylesheet" href="./static/css/bulma.min.css" />
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css" />
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css" />
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+    <link rel="stylesheet" href="./static/css/index.css" />
+    <!-- <link rel="icon" href="./static/images/favicon.svg" /> -->
+
+    <style>
+      .render_wrapper {
+        position: relative;
+        height: 350px;
+      }
+
+      .conference {
+        font-family: "Google Sans", sans-serif;
+        color: hsl(240, 2%, 10%) !important;
+        font-family: "Merriweather", serif;
+        font-weight: 500;
+      }
+
+      .results-carousel textbox {
+        font-size: 7px;
+        font-family: "Google Sans", cursive, sans-serif;
+        color: hsl(321, 56%, 56%) !important;
+      }
+      .dialog-box {
+        background-color: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(96, 85, 85, 0.494);
+        padding: 10px;
+        border-radius: 15px;
+        z-index: 1000;
+        font-size: 14px;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        color: hsl(322, 33%, 22%) !important;
+        font-weight: bold;
+      }
+    </style>
+
+    <!-- Import the component -->
+    <script
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/bulma-carousel.min.js"></script>
+    <script src="./static/js/bulma-slider.min.js"></script>
+    <script src="./static/js/index.js"></script>
+  </head>
+  <body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a
+          role="button"
+          class="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="navbar-menu">
+        <div class="navbar-start" style="flex-grow: 1; justify-content: center">
+          <a class="navbar-item" href="https://github.com/huanngzh">
+            <span class="icon">
+              <i class="fas fa-home"></i>
+            </span>
+          </a>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link"> More Research </a>
+            <div class="navbar-dropdown">
+              <a
+                class="navbar-item"
+                href="https://huanngzh.github.io/EpiDiff/"
+                target="_blank">
+                EpiDiff
+              </a>
+              <a
+                class="navbar-item"
+                href="https://costwen.github.io/Ouroboros3D/"
+                target="_blank">
+                Ouroboros3D
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h1 class="title is-1 publication-title">
+                MV-Adapter: Multi-view Consistent Image Generation Made Easy
+              </h1>
+              <div class="is-size-5 publication-authors">
+                <a
+                  href="https://scholar.google.com.hk/citations?user=U3VbX6kAAAAJ"
+                  target="_blank"
+                  >Zehuan Huang</a
+                ><sup>1</sup>,
+                <a
+                  href="https://scholar.google.com/citations?user=b7ZJV9oAAAAJ"
+                  target="_blank"
+                  >Yuan-Chen Guo</a
+                ><sup>2</sup>, Haoran Wang<sup>3</sup>,
+                <a href="https://yiranran.github.io/" target="_blank">Ran Yi</a
+                ><sup>3</sup>,
+                <a href="https://dmcv.sjtu.edu.cn/people/" target="_blank"
+                  >Lizhuang Ma</a
+                ><sup>3</sup>,
+                <a
+                  href="https://scholar.google.com/citations?user=50194vkAAAAJ"
+                  target="_blank"
+                  >Yan-Pei Cao</a
+                ><sup>2</sup>,
+                <a
+                  href="https://scholar.google.com/citations?user=_8lB7xcAAAAJ"
+                  target="_blank"
+                  >Lu Sheng</a
+                ><sup>1</sup>
+              </div>
+
+              <div class="is-size-5 publication-authors">
+                <sup>1</sup>Beihang University &nbsp;&nbsp; <sup>2</sup>VAST
+                &nbsp;&nbsp; <sup>3</sup>Shanghai Jiao Tong University
+              </div>
+
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <!-- PDF Link. -->
+                  <span class="link-block">
+                    <a
+                      href=""
+                      target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Paper</span>
+                    </a>
+                  </span>
+                  <!-- Video Link. -->
+                  <!-- <span class="link-block">
+                    <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                       class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                          <i class="fab fa-youtube"></i>
+                      </span>
+                      <span>Video</span>
+                    </a>
+                  </span> -->
+                  <!-- Code Link. -->
+                  <span class="link-block">
+                    <a
+                      href="https://github.com/huanngzh/MV-Adapter"
+                      target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fab fa-github"></i>
+                      </span>
+                      <span>Code</span>
+                    </a>
+                  </span>
+                  <!-- Model Link. -->
+                  <span class="link-block">
+                    <a
+                      href=""
+                      target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fa fa-database"></i>
+                      </span>
+                      <span>Model</span>
+                    </a>
+                  </span>
+                  <!-- Demo Link. -->
+                  <span class="link-block">
+                    <a
+                      href=""
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="far fa-smile"></i>
+                      </span>
+                      <span>Demo</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+              <div class="is-size-5 publication-authors">
+                <hr
+                  style="
+                    width: 100%;
+                    height: 0.7px;
+                    background-color: rgba(0, 0, 0, 0.665);
+                    margin-top: 1em;
+                  " />
+                Create High-fidelity Multi-view Images with Various Base T2I
+                Models and Various Conditions.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero is-light is-small">
+      <div class="hero-body">
+        <div class="container is-centered">
+          <div class="has-text-centered">
+            <video
+              id="dollyzoom"
+              autoplay
+              controls
+              muted
+              loop
+              playsinline
+              width="80%">
+              <source src="./videos/teaser.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="columns is-centered">
+            <div class="column is-four-fifths">
+              <b>Row 1</b> shows results by integrating MV-Adapter with
+              <font color="#3a86ff"
+                ><b
+                  >personalized T2Is, distilled few-step T2Is, and
+                  ControlNets</b
+                ></font
+              >, demonstrating its adaptability. <b>Row 2</b> shows results
+              under various control signals, including
+              <font color="#3a86ff"
+                ><b>view-guided or geometry-guided</b>
+              </font>
+              generation with
+              <font color="#3a86ff"><b>text or image inputs</b></font
+              >, showcasing its versatility.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <video
+              id="dollyzoom"
+              autoplay
+              controls
+              muted
+              loop
+              playsinline
+              width="100%">
+              <source src="./videos/more_views.mp4" type="video/mp4" />
+            </video>
+            <br />
+            <div class="has-text-centered">
+              Here we show that MV-Adapter generates viewpoints with elevation
+              ranging from 0 to 30 degrees.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <!-- Abstract. -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Existing multi-view image generation methods often make invasive
+                modifications to pre-trained text-to-image (T2I) models and
+                require full fine-tuning, leading to (1) high computational
+                costs, especially with large base models and high-resolution
+                images, and (2) degradation in image quality due to optimization
+                difficulties and scarce high-quality 3D data. In this paper, we
+                propose the first adapter-based solution for multi-view image
+                generation, and introduce MV-Adapter, a versatile plug-and-play
+                adapter that enhances T2I models and their derivatives without
+                altering the original network structure or feature space. By
+                updating fewer parameters, MV-Adapter enables efficient training
+                and preserves the prior knowledge embedded in pre-trained
+                models, mitigating overfitting risks. To efficiently model the
+                3D geometric knowledge within the adapter, we introduce
+                innovative designs that include duplicated self-attention layers
+                and parallel attention architecture, enabling the adapter to
+                inherit the powerful priors of the pre-trained models to model
+                the novel 3D knowledge. Moreover, we present a unified condition
+                encoder that seamlessly integrates camera parameters and
+                geometric information, facilitating applications such as text-
+                and image-based 3D generation and texturing. MV-Adapter achieves
+                multi-view generation at 768 resolution on Stable Diffusion XL
+                (SDXL), and demonstrates adaptability and versatility. It can
+                also be extended to arbitrary view generation, enabling broader
+                applications. We demonstrate that MV-Adapter sets a new quality
+                standard for multi-view image generation, and opens up new
+                possibilities due to its efficiency, adaptability and
+                versatility.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--/ Abstract. -->
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="has-text-centered">
+          <h2 class="title is-3">Method</h2>
+        </div>
+        <br />
+        <div class="columns is-centered is-vcentered">
+          <div class="column is-half">
+            <img src="./assets/overview_inference.png" class="" alt="" />
+          </div>
+          <div class="column is-half">
+            MV-Adapter is a plug-and-play adapter that learns multi-view priors
+            transferable to derivatives of T2I models without
+            <font color="#3a86ff"><b>specific tuning</b></font
+            >, and enable T2Is to generate multi-view consistent images
+            <font color="#3a86ff"><b>under various conditions</b></font
+            >. At inference time, our MV-Adapter, which contains a condition
+            guider <font color="#ffe699"><b>(yellow)</b></font> and the
+            decoupled attention layers <font color="#bdd7ee"><b>(blue)</b></font
+            >, can be directly inserted into a personalized or distilled T2I to
+            constitute the multi-view generator.
+          </div>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <br />
+            <img src="./assets/pipeline_overview.png" class="" alt="" />
+            Our MV-Adapter consists of two components: (1)
+            <b>a condition guider</b> that encodes camera condition or geometry
+            condition; (2) <b>decoupled attention layers</b> that contain
+            multi-view attention layers for learning multi-view consistency, and
+            optional image cross-attention layers to support image-conditioned
+            generation, where we use the pre-trained U-Net to encode the
+            reference image to extract fine-grained information.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <div class="has-text-centered">
+              <h2 class="title is-3">Text-to-Multiview</h2>
+            </div>
+            <br />
+            <video autoplay controls muted loop playsinline height="100%">
+              <source src="./videos/more_results_t2mv.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <div class="has-text-centered">
+              <h2 class="title is-3">Image-to-Multiview</h2>
+            </div>
+            <br />
+            <video autoplay controls muted loop playsinline height="100%">
+              <source src="./videos/more_results_i2mv.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <div class="has-text-centered">
+              <h2 class="title is-3">Sketch-to-Multiview (with ControlNet)</h2>
+            </div>
+            <br />
+            <video autoplay controls muted loop playsinline height="100%">
+              <source
+                src="./videos/more_results_sketch2mv.mp4"
+                type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <div class="has-text-centered">
+              <h2 class="title is-3">Text-condition 3D Generation</h2>
+            </div>
+            <br />
+            <video autoplay controls muted loop playsinline height="100%">
+              <source
+                src="./videos/more_results_text_to_3d.mp4"
+                type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <div class="has-text-centered">
+              <h2 class="title is-3">Image-condition 3D Generation</h2>
+            </div>
+            <br />
+            <video autoplay controls muted loop playsinline height="100%">
+              <source
+                src="./videos/more_results_image_to_3d.mp4"
+                type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!---------------------------------------------Functions Start-------------------------------------------------->
+    <script>
+      function createRadioButtons_image(name) {
+        const createRadioButton = (value, label, checked = false) => {
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = name;
+          input.value = value;
+          input.checked = checked;
+          input.style.opacity = "0";
+          input.id = value + name;
+          input.style.position = "absolute";
+
+          const labelElement = document.createElement("label");
+          labelElement.htmlFor = input.id;
+
+          const span = document.createElement("span");
+          span.innerHTML = label;
+
+          labelElement.appendChild(input);
+          labelElement.appendChild(span);
+
+          const div = document.createElement("div");
+          div.appendChild(labelElement);
+
+          return div;
+        };
+
+        return [
+          createRadioButton("texture", "texture", true), // Default to texture
+          createRadioButton("mesh", "mesh"),
+          createRadioButton("image", "Show image"),
+        ];
+      }
+
+      function createRadioButtons_uncondition(name) {
+        const createRadioButton = (value, label, checked = false) => {
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = name;
+          input.value = value;
+          input.checked = checked;
+          input.style.opacity = "0";
+          input.id = value + name;
+          input.style.position = "absolute";
+
+          const labelElement = document.createElement("label");
+          labelElement.htmlFor = input.id;
+
+          const span = document.createElement("span");
+          span.innerHTML = label;
+
+          labelElement.appendChild(input);
+          labelElement.appendChild(span);
+
+          const div = document.createElement("div");
+          div.appendChild(labelElement);
+
+          return div;
+        };
+
+        return [
+          createRadioButton("texture", "texture", true), // Default to texture
+          createRadioButton("mesh", "mesh"),
+        ];
+      }
+
+      function createImageElement(src) {
+        const imageElement = document.createElement("img");
+        imageElement.src = src;
+        imageElement.style.display = "none";
+        imageElement.style.width = "100%";
+        imageElement.style.height = "100%";
+        return imageElement;
+      }
+
+      function createModelView_image(modelPath, index) {
+        const modelDiv = document.createElement("div");
+        modelDiv.className = "item render_wrapper";
+
+        // Create and append Model Viewer
+        const modelViewerDiv = document.createElement("div");
+        modelViewerDiv.className = "render_wrapper";
+        const modelViewer = document.createElement("model-viewer");
+        // ... set modelViewer properties ...
+        modelViewer.src = "./image_models/" + modelPath + ".glb";
+        modelViewer.alt = "Description of model";
+        modelViewer.setAttribute("auto-rotate", "");
+        modelViewer.setAttribute("camera-controls", "");
+        modelViewer.style.width = "100%";
+        modelViewer.style.height = "100%";
+        modelViewer.style.backgroundColor = "transparent";
+        modelViewer.setAttribute("camera-orbit", "50deg 75deg 3m");
+
+        const imageElement = createImageElement(
+          "./images/" + modelPath + ".png"
+        );
+        const radioButtons = createRadioButtons_image(
+          "display-option-" + index
+        );
+        const updateColors = () => {
+          radioButtons.forEach((rb) => {
+            rb.querySelector("span").style.color = rb.querySelector("input")
+              .checked
+              ? "green"
+              : "blue";
+            rb.querySelector("span").style.opacity = rb.querySelector("input")
+              .checked
+              ? 1
+              : 0.2;
+          });
+        };
+
+        radioButtons.forEach((radioButton) => {
+          radioButton
+            .querySelector("input")
+            .addEventListener("change", updateColors);
+        });
+        updateColors();
+
+        let originalTexture = null;
+        modelViewer.addEventListener("load", function () {
+          const material = modelViewer.model.materials[0];
+          originalTexture =
+            material.pbrMetallicRoughness.baseColorTexture.texture;
+        });
+
+        radioButtons[0]
+          .querySelector("input")
+          .addEventListener("change", function () {
+            const material = modelViewer.model.materials[0];
+            const texture =
+              material.pbrMetallicRoughness.baseColorTexture.texture;
+            if (this.checked) {
+              const material = modelViewer.model.materials[0];
+              material.pbrMetallicRoughness.baseColorTexture.setTexture(
+                originalTexture
+              );
+              modelViewer.style.display = "block";
+              imageElement.style.display = "none";
+            }
+          });
+        radioButtons[1]
+          .querySelector("input")
+          .addEventListener("change", function () {
+            const material = modelViewer.model.materials[0];
+            const texture =
+              material.pbrMetallicRoughness.baseColorTexture.texture;
+            if (this.checked) {
+              const material = modelViewer.model.materials[0];
+              material.pbrMetallicRoughness.baseColorTexture.setTexture(null);
+              modelViewer.style.display = "block";
+              imageElement.style.display = "none";
+            }
+          });
+        radioButtons[2]
+          .querySelector("input")
+          .addEventListener("change", function () {
+            if (this.checked) {
+              modelViewer.style.display = "none";
+              imageElement.style.display = "block";
+            }
+          });
+
+        const controlsDiv = document.createElement("div");
+        controlsDiv.className = "controls";
+        radioButtons.forEach((radioButton) =>
+          controlsDiv.appendChild(radioButton)
+        );
+        modelDiv.appendChild(controlsDiv);
+
+        modelDiv.appendChild(imageElement);
+        modelDiv.appendChild(modelViewer); // Append model viewer first
+        modelDiv.appendChild(modelViewerDiv);
+
+        return modelDiv;
+      }
+
+      function createModelView_uncondition(modelPath, index) {
+        const modelDiv = document.createElement("div");
+        modelDiv.className = "item render_wrapper";
+
+        // Create and append Model Viewer
+        const modelViewerDiv = document.createElement("div");
+        modelViewerDiv.className = "render_wrapper";
+        const modelViewer = document.createElement("model-viewer");
+        // ... set modelViewer properties ...
+        modelViewer.src = "./models/" + modelPath + ".glb";
+        modelViewer.alt = "Description of model";
+        modelViewer.setAttribute("auto-rotate", "");
+        modelViewer.setAttribute("camera-controls", "");
+        modelViewer.style.width = "100%";
+        modelViewer.style.height = "100%";
+        modelViewer.style.backgroundColor = "transparent";
+        modelViewer.setAttribute("camera-orbit", "50deg 75deg 3m");
+
+        const radioButtons = createRadioButtons_uncondition(
+          "display-option-" + index
+        );
+        const updateColors = () => {
+          radioButtons.forEach((rb) => {
+            rb.querySelector("span").style.color = rb.querySelector("input")
+              .checked
+              ? "green"
+              : "blue";
+            rb.querySelector("span").style.opacity = rb.querySelector("input")
+              .checked
+              ? 1
+              : 0.2;
+          });
+        };
+
+        radioButtons.forEach((radioButton) => {
+          radioButton
+            .querySelector("input")
+            .addEventListener("change", updateColors);
+        });
+        updateColors();
+
+        let originalTexture = null;
+        modelViewer.addEventListener("load", function () {
+          const material = modelViewer.model.materials[0];
+          originalTexture =
+            material.pbrMetallicRoughness.baseColorTexture.texture;
+        });
+
+        radioButtons[0]
+          .querySelector("input")
+          .addEventListener("change", function () {
+            const material = modelViewer.model.materials[0];
+            const texture =
+              material.pbrMetallicRoughness.baseColorTexture.texture;
+            if (this.checked) {
+              const material = modelViewer.model.materials[0];
+              material.pbrMetallicRoughness.baseColorTexture.setTexture(
+                originalTexture
+              );
+              modelViewer.style.display = "block";
+            }
+          });
+        radioButtons[1]
+          .querySelector("input")
+          .addEventListener("change", function () {
+            const material = modelViewer.model.materials[0];
+            const texture =
+              material.pbrMetallicRoughness.baseColorTexture.texture;
+            if (this.checked) {
+              const material = modelViewer.model.materials[0];
+              material.pbrMetallicRoughness.baseColorTexture.setTexture(null);
+              modelViewer.style.display = "block";
+            }
+          });
+
+        const controlsDiv = document.createElement("div");
+        controlsDiv.className = "controls";
+        radioButtons.forEach((radioButton) =>
+          controlsDiv.appendChild(radioButton)
+        );
+        modelDiv.appendChild(controlsDiv);
+
+        modelDiv.appendChild(modelViewer); // Append model viewer first
+        modelDiv.appendChild(modelViewerDiv);
+
+        return modelDiv;
+      }
+
+      function createModelView_text(modelPath, index) {
+        const modelDiv = document.createElement("div");
+        modelDiv.className = "item render_wrapper";
+
+        // Create and append Model Viewer
+        const modelViewerDiv = document.createElement("div");
+        modelViewerDiv.className = "render_wrapper";
+        const modelViewer = document.createElement("model-viewer");
+        // ... set modelViewer properties ...
+        modelViewer.src = "./text_models/" + modelPath + ".glb";
+        modelViewer.alt = "Description of model";
+        modelViewer.setAttribute("auto-rotate", "");
+        modelViewer.setAttribute("camera-controls", "");
+        modelViewer.style.width = "100%";
+        modelViewer.style.height = "100%";
+        modelViewer.style.backgroundColor = "transparent";
+        modelViewer.setAttribute("camera-orbit", "50deg 75deg 3m");
+
+        const radioButtons = createRadioButtons_uncondition(
+          "display-option-" + index
+        );
+        const updateColors = () => {
+          radioButtons.forEach((rb) => {
+            rb.querySelector("span").style.color = rb.querySelector("input")
+              .checked
+              ? "green"
+              : "blue";
+            rb.querySelector("span").style.opacity = rb.querySelector("input")
+              .checked
+              ? 1
+              : 0.2;
+          });
+        };
+
+        radioButtons.forEach((radioButton) => {
+          radioButton
+            .querySelector("input")
+            .addEventListener("change", updateColors);
+        });
+        updateColors();
+
+        let originalTexture = null;
+        modelViewer.addEventListener("load", function () {
+          const material = modelViewer.model.materials[0];
+          originalTexture =
+            material.pbrMetallicRoughness.baseColorTexture.texture;
+        });
+
+        radioButtons[0]
+          .querySelector("input")
+          .addEventListener("change", function () {
+            const material = modelViewer.model.materials[0];
+            const texture =
+              material.pbrMetallicRoughness.baseColorTexture.texture;
+            if (this.checked) {
+              const material = modelViewer.model.materials[0];
+              material.pbrMetallicRoughness.baseColorTexture.setTexture(
+                originalTexture
+              );
+              modelViewer.style.display = "block";
+            }
+          });
+        radioButtons[1]
+          .querySelector("input")
+          .addEventListener("change", function () {
+            const material = modelViewer.model.materials[0];
+            const texture =
+              material.pbrMetallicRoughness.baseColorTexture.texture;
+            if (this.checked) {
+              const material = modelViewer.model.materials[0];
+              material.pbrMetallicRoughness.baseColorTexture.setTexture(null);
+              modelViewer.style.display = "block";
+            }
+          });
+
+        const controlsDiv = document.createElement("div");
+        controlsDiv.className = "controls";
+        radioButtons.forEach((radioButton) =>
+          controlsDiv.appendChild(radioButton)
+        );
+
+        const dialogBox = document.createElement("div");
+        dialogBox.className = "dialog-box";
+        dialogBox.style.position = "absolute";
+        dialogBox.style.display = "none";
+        dialogBox.style.top = "30px";
+        dialogBox.style.right = "0";
+
+        const descriptionCheckbox = document.createElement("input");
+        descriptionCheckbox.type = "checkbox";
+        descriptionCheckbox.id = "descriptionCheckbox-" + index;
+        descriptionCheckbox.style.opacity = "0";
+
+        const descriptionLabel = document.createElement("label");
+        descriptionLabel.htmlFor = descriptionCheckbox.id;
+
+        const span = document.createElement("span");
+        span.innerHTML = "Show Description";
+        span.style.position = "relative";
+        span.style.top = "-7px";
+        span.style.marginLeft = "10px";
+        span.style.whiteSpace = "nowrap";
+
+        descriptionLabel.appendChild(span);
+
+        const descriptionText =
+          "this is a test this is a test this is a test this is a test this is a test"; //
+
+        descriptionCheckbox.addEventListener("change", function () {
+          if (this.checked) {
+            // dialogBox.innerHTML = descriptionText;
+            // dialogBox.style.display = 'block';
+
+            fetch("./text/" + modelPath + ".txt")
+              .then((response) => response.text())
+              .then((text) => {
+                dialogBox.innerHTML = text;
+                dialogBox.style.display = "block";
+              })
+              .catch((error) => console.error(error));
+          } else {
+            dialogBox.style.display = "none";
+          }
+        });
+
+        const checkboxWrapper = document.createElement("div");
+        checkboxWrapper.style.position = "relative";
+        checkboxWrapper.appendChild(descriptionCheckbox);
+        checkboxWrapper.appendChild(dialogBox);
+        checkboxWrapper.appendChild(descriptionLabel);
+        controlsDiv.appendChild(checkboxWrapper);
+
+        modelDiv.appendChild(controlsDiv);
+
+        modelDiv.appendChild(modelViewer); // Append model viewer first
+        modelDiv.appendChild(modelViewerDiv);
+
+        return modelDiv;
+      }
+
+      function createCarousel(
+        modelPaths,
+        resultsCarouselId,
+        createModelViewFunction
+      ) {
+        const resultsCarousel = document.getElementById(resultsCarouselId);
+
+        modelPaths.forEach((modelPath, index) => {
+          const uniqueId = resultsCarouselId + "-model-" + index;
+          const modelDiv = createModelViewFunction(modelPath, uniqueId);
+          resultsCarousel.appendChild(modelDiv);
+        });
+      }
+    </script>
+    <!---------------------------------------------Functions Over-------------------------------------------------->
+
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container is-max-desktop is-centered has-text-centered">
+          <h1 class="title is-3">Text-condition Texture Generation</h1>
+          <div id="results-carousel1" class="carousel results-carousel"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container is-max-desktop is-centered has-text-centered">
+          <h1 class="title is-3">Image-condition Texture Generation</h1>
+          <div id="results-carousel2" class="carousel results-carousel"></div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const modelPaths1 = [
+        "ac9d4e4f44f34775ad46878ba8fbfd86",
+        "64181bf0a0534f54a6524a05f176a5fa",
+        "80928bba9d564d06b235e7781dc92d32",
+        "b5f0f0f33e3644d1ba73576ceb486d42",
+        "fce56f947d3e40f38ae270003be2ea9a",
+        "6d759cbb02b64dccab2da4954f3c5a2c",
+        "9cf9da6809894cae9377ae94b1d4256b",
+        "35e010a8665a437b826c4e07810a1ccb",
+        "36aa6c1683564a828b9de78af739195c",
+        "7fba8d4b9ecf46cc8e09b306e48e1956",
+        "4371da6fe69c4ae08cd442cfe2a7141d",
+        "e380388700664db9ba18d40612baacd0",
+        "ec1c69eb01ea42e5b20c0c2ccf361db5",
+        "ef4c7e106f31441cbe6bc6e6f97b3e1a",
+      ];
+
+      const modelPaths2 = [
+        "1ccd5c1563ea4f5fb8152eac59dabd5c",
+        "ebffbc1ef9994b41a1841bbe9492d012",
+        "00a57bbd1c894a7cb9e45ec396a8f660",
+        "0e6c58589bf64756830984e9bf422387",
+        "7fba8d4b9ecf46cc8e09b306e48e1956",
+        "35e010a8665a437b826c4e07810a1ccb",
+        "1e3a65d95f7a41e997c2658877ca9897",
+        "1e942d789a954b36a67c5a20fb1fbd44",
+        "4b5293b9de7f4c3b92417e6a2674d184",
+        "9cf9da6809894cae9377ae94b1d4256b",
+        "a1008ad98bdf420e80d46c29af1928c4",
+        "cce39de2c1354b2d87a6f70f358a8f3c",
+      ];
+
+      createCarousel(modelPaths1, "results-carousel1", createModelView_text);
+      createCarousel(modelPaths2, "results-carousel2", createModelView_image);
+    </script>
+
+    <section class="section" id="BibTeX">
+      <div class="container is-max-desktop content">
+        <div class="has-text-centered">
+          <h2 class="title">BibTeX</h2>
+        </div>
+        <div
+          class="columns is-centered has-text-centered"
+          style="padding-bottom: 1.5rem">
+          <div class="column is-four-fifths">
+            <div class="content has-text-justified">
+              <pre><code>@article{huang2024mvadapter,
+  title={MV-Adapter: Multi-view Consistent Image Generation Made Easy},
+  author={Huang, Zehuan and Guo, Yuanchen and Wang, Haoran and Yi, Ran and Ma, Lizhuang and Cao, Yan-Pei and Sheng, Lu},
+  journal={},
+  year={2024}
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="content has-text-centered">
+          <a class="icon-link" href="">
+            <i class="fas fa-file-pdf"></i>
+          </a>
+          <a
+            class="icon-link"
+            href="https://github.com/huanngzh"
+            class="external-link"
+            disabled>
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-8">
+            <div class="content">
+              <p style="text-align: center">
+                The website template is borrowed from
+                <a href="https://nerfies.github.io/" target="_blank">Nerfies</a
+                >.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
