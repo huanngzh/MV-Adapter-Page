@@ -4,12 +4,12 @@
     <meta charset="utf-8" />
     <meta
       name="description"
-      content="MV-Adapter is a versatile plug-and-play adapter that turns existing pre-trained text-to-image (T2I) diffusion models to multi-view generators." />
+      content="Personalize Anything is a training-free framework for personalized image generation in DiT, enabling layout-guided generation, multi-subject personalization, and mask-controlled editing." />
     <meta
       name="keywords"
-      content="MV-Adapter, Multi-view Image Generation, Diffusion Models" />
+      content="Subject personalization, T2I Image Generation, Diffusion Models" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MV-Adapter: Multi-view Consistent Image Generation Made Easy</title>
+    <title>Personalize Anything for Free with Diffusion Transformer</title>
 
     <link
       href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
@@ -93,6 +93,12 @@
             <div class="navbar-dropdown">
               <a
                 class="navbar-item"
+                href="https://huanngzh.github.io/MV-Adapter-Page/"
+                target="_blank">
+                MV-Adapter
+              </a>              
+              <a
+                class="navbar-item"
                 href="https://huanngzh.github.io/EpiDiff/"
                 target="_blank">
                 EpiDiff
@@ -121,43 +127,44 @@
           <div class="columns is-centered">
             <div class="column has-text-centered">
               <h1 class="title is-1 publication-title">
-                MV-Adapter: Multi-view Consistent Image Generation Made Easy
+                Personalize Anything for Free with Diffusion Transformer
               </h1>
               <div class="is-size-5 publication-authors">
+                <a
+                  href="https://scholar.google.com/citations?user=riCXH64AAAAJ"
+                  target="_blank"
+                  >Haoran Feng</a
+                ><sup>1</sup>,
                 <a
                   href="https://scholar.google.com.hk/citations?user=U3VbX6kAAAAJ"
                   target="_blank"
                   >Zehuan Huang</a
-                ><sup>1</sup>,
+                ><sup>2†✉</sup>,
                 <a
-                  href="https://scholar.google.com/citations?user=b7ZJV9oAAAAJ"
+                  href="https://scholar.google.com/citations?user=HL3uwegAAAAJ"
                   target="_blank"
-                  >Yuan-Chen Guo</a
-                ><sup>2†</sup>, Haoran Wang<sup>3</sup>,
-                <a href="https://yiranran.github.io/" target="_blank">Ran Yi</a
-                ><sup>3</sup>,
-                <a href="https://dmcv.sjtu.edu.cn/people/" target="_blank"
-                  >Lizhuang Ma</a
-                ><sup>3</sup>,
-                <a href="https://yanpei.me/" target="_blank">Yan-Pei Cao</a
-                ><sup>2✉</sup>,
+                  >Lin Li</a
+                ><sup>3</sup>, 
+                <a href="https://www.au.tsinghua.edu.cn/info/1096/1543.htm" target="_blank"
+                  >Hairong Lv</a
+                ><sup>4</sup>,
                 <a href="https://lucassheng.github.io/" target="_blank"
                   >Lu Sheng</a
-                ><sup>1✉</sup>
+                ><sup>2✉</sup>
               </div>
 
               <div class="is-size-5 publication-authors">
-                <sup>1</sup>School of Software, Beihang University &nbsp;&nbsp;
-                <sup>2</sup>VAST &nbsp;&nbsp; <sup>3</sup>Shanghai Jiao Tong
-                University <br />
-                <sup>†</sup>Project Lead &nbsp;&nbsp; <sup>✉</sup>Corresponding
-                Authors
+                <sup>1</sup>Tsinghua Shenzhen International Graduate School &nbsp;&nbsp;
+                <sup>2</sup>School of Software, Beihang University &nbsp;&nbsp;
+                <sup>3</sup>School of Finance, Renmin University of China &nbsp;&nbsp; 
+                <sup>4</sup>Department of Automation, Tsinghua University <br />
+                <sup>†</sup>Project Lead &nbsp;&nbsp; <sup>✉</sup>Corresponding Authors
               </div>
 
               <div class="column has-text-centered">
                 <div class="publication-links">
                   <!-- PDF Link. -->
-                  <span class="link-block">
+                  <!-- <span class="link-block">
                     <a
                       href="https://arxiv.org/abs/2412.03632"
                       target="_blank"
@@ -167,19 +174,9 @@
                       </span>
                       <span>Paper</span>
                     </a>
-                  </span>
-                  <!-- Video Link. -->
-                  <!-- <span class="link-block">
-                    <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
-                       class="external-link button is-normal is-rounded is-dark">
-                      <span class="icon">
-                          <i class="fab fa-youtube"></i>
-                      </span>
-                      <span>Video</span>
-                    </a>
                   </span> -->
                   <!-- Code Link. -->
-                  <span class="link-block">
+                  <!-- <span class="link-block">
                     <a
                       href="https://github.com/huanngzh/MV-Adapter"
                       target="_blank"
@@ -189,9 +186,9 @@
                       </span>
                       <span>Code</span>
                     </a>
-                  </span>
+                  </span> -->
                   <!-- Model Link. -->
-                  <span class="link-block">
+                  <!-- <span class="link-block">
                     <a
                       href="https://huggingface.co/huanngzh/mv-adapter"
                       target="_blank"
@@ -201,9 +198,9 @@
                       </span>
                       <span>Model</span>
                     </a>
-                  </span>
+                  </span> -->
                   <!-- Demo Link. -->
-                  <span class="link-block">
+                  <!-- <span class="link-block">
                     <a
                       href="https://huggingface.co/collections/huanngzh/mv-adapter-spaces-677e497578747fd734a1b999"
                       target="_blank"
@@ -213,7 +210,7 @@
                       </span>
                       <span>Demos</span>
                     </a>
-                  </span>
+                  </span> -->
                 </div>
               </div>
               <div class="is-size-5 publication-authors">
@@ -224,8 +221,8 @@
                     background-color: rgba(0, 0, 0, 0.665);
                     margin-top: 1em;
                   " />
-                Create High-fidelity Multi-view Images with Various Base T2I
-                Models and Various Conditions.
+                  Create images with high text alignment, object consistency, diversity, and controllability using foundational T2I models.
+                <!-- Create High-fidelity Multi-view Images with Various Base T2I Models and Various Conditions. -->
               </div>
             </div>
           </div>
@@ -237,7 +234,8 @@
       <div class="hero-body">
         <div class="container is-centered">
           <div class="has-text-centered">
-            <video
+            <img src="./images/teaser.png" class="" alt="" />
+            <!-- <video
               id="dollyzoom"
               autoplay
               controls
@@ -246,11 +244,25 @@
               playsinline
               width="80%">
               <source src="./videos/teaser.mp4" type="video/mp4" />
-            </video>
+            </video> -->
           </div>
           <div class="columns is-centered">
             <div class="column is-four-fifths">
-              <b>Row 1</b> shows results by integrating MV-Adapter with
+              The images show our method's results in single-subject personalization, 
+              layout-guided subject personalization, multi-subject personalization, and more, 
+              demonstrating strong object consistency and controllability.
+              <!-- <b>Row 1</b> shows results of our method in
+              <font color="#3a86ff"
+                ><b
+                  >single-subject personalization</b
+                ></font
+              > and 
+              <font color="#3a86ff"
+                ><b
+                  >layout-guided subject personalization</b
+                ></font
+              >. -->
+              <!-- <b>Row 1</b> shows results by integrating MV-Adapter with
               <font color="#3a86ff"
                 ><b
                   >personalized T2Is, distilled few-step T2Is, and
@@ -263,14 +275,14 @@
               </font>
               generation with
               <font color="#3a86ff"><b>text or image inputs</b></font
-              >, showcasing its versatility.
+              >, showcasing its versatility. -->
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <!-- <section class="section">
       <div class="container is-max-desktop">
         <div class="columns is-centered has-text-centered">
           <div class="column is-full-width">
@@ -292,7 +304,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <section class="section">
       <div class="container is-max-desktop">
@@ -302,34 +314,17 @@
             <h2 class="title is-3">Abstract</h2>
             <div class="content has-text-justified">
               <p>
-                Existing multi-view image generation methods often make invasive
-                modifications to pre-trained text-to-image (T2I) models and
-                require full fine-tuning, leading to (1) high computational
-                costs, especially with large base models and high-resolution
-                images, and (2) degradation in image quality due to optimization
-                difficulties and scarce high-quality 3D data. In this paper, we
-                propose the first adapter-based solution for multi-view image
-                generation, and introduce MV-Adapter, a versatile plug-and-play
-                adapter that enhances T2I models and their derivatives without
-                altering the original network structure or feature space. By
-                updating fewer parameters, MV-Adapter enables efficient training
-                and preserves the prior knowledge embedded in pre-trained
-                models, mitigating overfitting risks. To efficiently model the
-                3D geometric knowledge within the adapter, we introduce
-                innovative designs that include duplicated self-attention layers
-                and parallel attention architecture, enabling the adapter to
-                inherit the powerful priors of the pre-trained models to model
-                the novel 3D knowledge. Moreover, we present a unified condition
-                encoder that seamlessly integrates camera parameters and
-                geometric information, facilitating applications such as text-
-                and image-based 3D generation and texturing. MV-Adapter achieves
-                multi-view generation at 768 resolution on Stable Diffusion XL
-                (SDXL), and demonstrates adaptability and versatility. It can
-                also be extended to arbitrary view generation, enabling broader
-                applications. We demonstrate that MV-Adapter sets a new quality
-                standard for multi-view image generation, and opens up new
-                possibilities due to its efficiency, adaptability and
-                versatility.
+                Personalized image generation aims to produce images of user-specified concepts while enabling flexible editing.
+                Recent training-free approaches, while exhibit higher computational efficiency than training-based methods, 
+                struggle with identity preservation, applicability, and compatibility with diffusion transformers (DiTs).
+                In this paper, we uncover the untapped potential of DiT, where simply replacing denoising tokens with those of a reference subject achieves zero-shot subject reconstruction.
+                This simple yet effective feature injection technique unlocks diverse scenarios, from personalization to image editing.
+                Building upon this observation, we propose <b>Personalize Anything</b>, a training-free framework that achieves personalized image generation in DiT through:
+                (1) timestep-adaptive token replacement that enforces subject consistency via early-stage injection and enhances flexibility through late-stage regularization, 
+                and (2) patch perturbation strategies to boost structural diversity. 
+                Our method seamlessly supports layout-guided generation, multi-subject personalization, and mask-controlled editing.
+                Evaluations demonstrate state-of-the-art performance in identity preservation and versatility.
+                Our work establishes new insights into DiTs while delivering a practical paradigm for efficient personalization.
               </p>
             </div>
           </div>
@@ -345,10 +340,13 @@
         </div>
         <br />
         <div class="columns is-centered is-vcentered">
-          <div class="column is-half">
+          <!-- <div class="column is-half">
             <img src="./assets/overview_inference.png" class="" alt="" />
+          </div> -->
+          <div>
+            <img src="./images/pipeline.png" class="" alt="" />
           </div>
-          <div class="column is-half">
+          <!-- <div class="column is-half">
             MV-Adapter is a plug-and-play adapter that learns multi-view priors
             transferable to derivatives of T2I models without
             <font color="#3a86ff"><b>specific tuning</b></font
@@ -359,19 +357,28 @@
             decoupled attention layers <font color="#bdd7ee"><b>(blue)</b></font
             >, can be directly inserted into a personalized or distilled T2I to
             constitute the multi-view generator.
+          </div> -->
+          <div>
+            Personalize Anything anchors subject identity in early denoising through 
+            <font color="#3a86ff"><b>mask-guided token replacement</b></font> 
+            with preserved positional encoding, 
+            and transitions to multi-modal attention for semantic fusion with text in later steps. 
+            During token replacement, we inject variations via 
+            <font color="#3a86ff"><b>patch perturbations</b></font>. 
+            This timestep-adaptive strategy balances identity preservation and generative flexibility.
           </div>
         </div>
         <div class="columns is-centered">
           <div class="column is-full-width">
             <br />
-            <img src="./assets/pipeline_overview.png" class="" alt="" />
-            Our MV-Adapter consists of two components: (1)
-            <b>a condition guider</b> that encodes camera condition or geometry
-            condition; (2) <b>decoupled attention layers</b> that contain
-            multi-view attention layers for learning multi-view consistency, and
-            optional image cross-attention layers to support image-conditioned
-            generation, where we use the pre-trained U-Net to encode the
-            reference image to extract fine-grained information.
+            <img src="./images/method_extensions.png" class="" alt="" />
+            Personalize Anything enables: 
+            (a) <font color="#3a86ff"><b>layout-guided generation</b></font> 
+              by translating token-injected regions, 
+            (b) <font color="#3a86ff"><b>multi-subject composition</b></font> 
+              through sequential token injection, and 
+            (c) <font color="#3a86ff"><b>inpainting</b></font> and <font color="#3a86ff"><b>outpainting</b></font> 
+              via specifying masks and increased replacement.
           </div>
         </div>
       </div>
@@ -382,12 +389,16 @@
         <div class="columns is-centered has-text-centered">
           <div class="column is-full-width">
             <div class="has-text-centered">
-              <h2 class="title is-3">Text-to-Multiview</h2>
+              <h2 class="title is-3">Qualitative Comparisons on Single-subject Personalization</h2>
             </div>
             <br />
-            <video autoplay controls muted loop playsinline height="100%">
+            <img src="./images/full_experiment.png" class="" alt="" />
+            <!-- <video autoplay controls muted loop playsinline height="100%">
               <source src="./videos/more_results_t2mv.mp4" type="video/mp4" />
-            </video>
+            </video> -->
+            <div>
+              Our method produces high-fidelity images that are highly consistent with the specified subjects, without necessitating training or fine-tuning.
+            </div>
           </div>
         </div>
       </div>
@@ -398,12 +409,16 @@
         <div class="columns is-centered has-text-centered">
           <div class="column is-full-width">
             <div class="has-text-centered">
-              <h2 class="title is-3">Image-to-Multiview</h2>
+              <h2 class="title is-3">Qualitative Comparisons on Multi-subject Personalization</h2>
             </div>
             <br />
-            <video autoplay controls muted loop playsinline height="100%">
+            <img src="./images/comparison_multi_subject.png" class="" alt="" />
+            <!-- <video autoplay controls muted loop playsinline height="100%">
               <source src="./videos/more_results_i2mv.mp4" type="video/mp4" />
-            </video>
+            </video> -->
+            <div>
+              Our approach manages to maintain natural interactions among subjects via layout-guided generation, while ensuring each subject retains its identical characteristics and distinctiveness.
+            </div>
           </div>
         </div>
       </div>
@@ -414,14 +429,18 @@
         <div class="columns is-centered has-text-centered">
           <div class="column is-full-width">
             <div class="has-text-centered">
-              <h2 class="title is-3">Sketch-to-Multiview (with ControlNet)</h2>
+              <h2 class="title is-3">Qualitative Comparisons on Subject-scene Composition</h2>
             </div>
             <br />
-            <video autoplay controls muted loop playsinline height="100%">
+            <img src="./images/comparison_subject_scene.png" class="" alt="" />
+            <div>
+            Our method successfully generates natural images while effectively preserving the details of the subjects.
+            </div>
+            <!-- <video autoplay controls muted loop playsinline height="100%">
               <source
                 src="./videos/more_results_sketch2mv.mp4"
                 type="video/mp4" />
-            </video>
+            </video> -->
           </div>
         </div>
       </div>
@@ -432,14 +451,18 @@
         <div class="columns is-centered has-text-centered">
           <div class="column is-full-width">
             <div class="has-text-centered">
-              <h2 class="title is-3">Text-condition 3D Generation</h2>
+              <h2 class="title is-3">More Applications</h2>
             </div>
             <br />
-            <video autoplay controls muted loop playsinline height="100%">
+            <img src="./images/applications.png" class="" alt="" />
+            <div>
+              <b>Personalize Anything</b> naturally extends to diverse real-world applications, including subject-driven image generation with layout guidance, inpainting and outpainting.
+            </div>           
+            <!-- <video autoplay controls muted loop playsinline height="100%">
               <source
                 src="./videos/more_results_text_to_3d.mp4"
                 type="video/mp4" />
-            </video>
+            </video> -->
           </div>
         </div>
       </div>
@@ -450,14 +473,20 @@
         <div class="columns is-centered has-text-centered">
           <div class="column is-full-width">
             <div class="has-text-centered">
-              <h2 class="title is-3">Image-condition 3D Generation</h2>
+              <h2 class="title is-3">Ablation Study</h2>
             </div>
             <br />
-            <video autoplay controls muted loop playsinline height="100%">
+            <img src="./images/ablation_study.png" class="" alt="" />
+            <!-- <video autoplay controls muted loop playsinline height="100%">
               <source
                 src="./videos/more_results_image_to_3d.mp4"
                 type="video/mp4" />
-            </video>
+            </video> -->
+            <div>
+              We conduct ablation studies on single-subject personalization, 
+              examining the effects of token replacement timestep threshold \(\tau\) 
+              and the patch perturbation strategy.
+            </div>
           </div>
         </div>
       </div>
@@ -950,12 +979,9 @@
           style="padding-bottom: 1.5rem">
           <div class="column is-four-fifths">
             <div class="content has-text-justified">
-              <pre><code>@article{huang2024mvadapter,
-  title={MV-Adapter: Multi-view Consistent Image Generation Made Easy},
-  author={Huang, Zehuan and Guo, Yuanchen and Wang, Haoran and Yi, Ran and Ma, Lizhuang and Cao, Yan-Pei and Sheng, Lu},
-  journal={arXiv preprint arXiv:2412.03632},
-  year={2024}
-}</code></pre>
+              <pre><code>
+                waiting
+              </code></pre>
             </div>
           </div>
         </div>
@@ -965,9 +991,9 @@
     <footer class="footer">
       <div class="container">
         <div class="content has-text-centered">
-          <a class="icon-link" href="https://arxiv.org/abs/2412.03632">
+          <!-- <a class="icon-link" href="">
             <i class="fas fa-file-pdf"></i>
-          </a>
+          </a> -->
           <a
             class="icon-link"
             href="https://github.com/huanngzh"
@@ -982,11 +1008,11 @@
               <p style="text-align: center">
                 Source code of this page can be found at
                 <a
-                  href="https://github.com/huanngzh/MV-Adapter-Page"
+                  href="https://github.com/DHUAVY/Personalize-Anything-Page"
                   target="_blank"
-                  >MV-Adapter-Page</a
-                >. The website template is borrowed from
-                <a href="https://nerfies.github.io/" target="_blank">Nerfies</a
+                  >Personalize-Anything-Page</a
+                >. The website template is forked from
+                <a href="https://github.com/huanngzh/MV-Adapter-Page" target="_blank">MV-Adapter-Page</a
                 >.
               </p>
             </div>
